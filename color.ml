@@ -9,7 +9,41 @@ and arguably unnecessarily so. By the way, it also has some bugs so it
 doesn't pass all the unit tests. No need to debug it though. You'll be
 replacing it wholesale with a simpler implementation. *)
 
-(* 8-bit RGB channel colors *)
+  type color = int * int * int
+
+  type color_name =
+  | Red
+  | Green
+  | Blue
+  | Orange
+  | Yellow
+  | Indigo
+  | Violet
+
+  let to_color (r : int) (g : int) (b : int) : color =
+    (r, g, b)
+
+  let red ((r, _g, _b) : color) : int =
+    r
+
+  let green ((_r, g, _b) : color) : int =
+    g
+
+  let blue ((_r, _g, b) : color) : int =
+    b
+
+  let color_named (c : color_name) : color =
+    match c with
+    | Red -> (255, 0, 0)
+    | Green -> (0, 255, 0)
+    | Blue -> (0, 0, 255)
+    | Orange -> (255, 165, 0)
+    | Yellow -> (255, 255, 0)
+    | Indigo -> (75, 0, 130)
+    | Violet -> (240, 130, 240)
+
+
+(*)(* 8-bit RGB channel colors *)
 type color = int ;;
 
 (* Some standard color names *)
@@ -49,4 +83,4 @@ let color_named (name : color_name) : color =
   | Orange -> 0b111111111010110100000000
   | Yellow -> 0b111111111111111000000000
   | Indigo -> 0b010110110000000010000010
-  | Violet -> 0b111100001000001011110100 ;;
+  | Violet -> 0b111100001000001011110100 ;; *)
