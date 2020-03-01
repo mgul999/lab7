@@ -119,8 +119,8 @@ with the elements inverted, *without using any of the `IntListStack`
 methods*.
 ......................................................................*)
 
-let invert_stack (s : IntListStack.stack) : IntListStack.stack =
-  failwith "not implemented" ;;
+let rec invert_stack : IntListStack.stack -> IntListStack.stack =
+   List.rev ;;
 
 (* Now what would be the result of the top operation on a stack
 inverted with `invert_stack`? Let's try it.
@@ -131,7 +131,7 @@ top value from `small_stack` inverted with `invert_stack` and name the
 result `bad_el`.
 ......................................................................*)
 
-let bad_el = 0 ;;
+let bad_el = IntListStack.top (invert_stack (small_stack ())) ;;
 
 (* This is bad. We have broken through the *abstraction barrier*
 defined by the `IntListStack` module. You may wonder: "if I know that
@@ -170,7 +170,25 @@ list`, even though that's the type you used in your implementation.
 
 module type INT_STACK =
   sig
-    (* ... your specification of the signature goes here ... *)
+    exception EmptyStack
+
+    type stack
+
+    (* empty -- An empty stack *)
+    val empty : stack
+
+    (* push i s -- Adds an integer element i to the top of stack s *)
+    val push : int -> stack -> stack
+
+    (* top s -- Returns the value of the topmost element on stack s,
+       raising the EmptyStack exception if there is no element to be
+       returned. *)
+    val top : stack -> int
+
+    (* pop s -- Returns a stack with the topmost element from s
+       removed, raising the EmptyStack exception if there is no
+       element to be removed. *)
+    val pop : stack -> stack
   end ;;
 
 (* Now, we'll apply the `INT_STACK` interface to the `IntListStack` to
@@ -190,4 +208,6 @@ perform list operations directly on it, which means the stack
 preserves its abstraction barrier.
 ......................................................................*)
 
-let safe_stack () = failwith "not implemented" ;;
+let safe_stack () =
+let open SafeIntListStack in
+push 1 (push 5 empty) ;;
